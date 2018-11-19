@@ -1,79 +1,26 @@
 require_relative 'reverse_letters'
 
-def find_anagram(word)
+def find_anagram(word) #works for three and four letter words
 	word_array = word.split(//)
 	all_anagrams = []
 
 	for i in 0...word.length
-		new_word = []
-		remaining_letters = word_array.select{|l| l != word_array[i]}
-		new_word << word_array[i]
-		new_word.push(remaining_letters)
-		all_anagrams << new_word.join
-	end
-
-	for i in 0...word.length
-		new_word = []
-		remaining_letters = word_array.select{|l| l != word_array[i]}
-		new_word << word_array[i]
-		new_word.push(reverse_letters(remaining_letters))
-		all_anagrams << new_word.join
-	end
-
-	return all_anagrams
-end
-
-def find_anagram_4(word) #SUPER wet...
-	word_array = word.split(//)
-	all_anagrams = []
-
-	for i in 0...word.length
-		new_word = []
+		
+		#keep letter at index and one other letter, then add the other two letters after, in original and reverse order
 		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-1]}
-		new_word << word_array[i] << word_array[i-1]
-		new_word.push(remaining_letters)
-		all_anagrams << new_word.join
-	end
+		all_anagrams << word_array[i] + word_array[i-1] + remaining_letters.join
+		all_anagrams << word_array[i] + word_array[i-1] + reverse_letters(remaining_letters).join
 
-	for i in 0...word.length
-		new_word = []
-		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-1]}
-		new_word << word_array[i] << word_array[i-1]
-		new_word.push(reverse_letters(remaining_letters))
-		all_anagrams << new_word.join
+		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-2]}
+		all_anagrams << word_array[i] + word_array[i-2] + remaining_letters.join
+		all_anagrams << word_array[i] + word_array[i-2] + reverse_letters(remaining_letters).join
+
+		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-3]}
+		all_anagrams << word_array[i] + word_array[i-3] + remaining_letters.join
+		all_anagrams << word_array[i] + word_array[i-3] + reverse_letters(remaining_letters).join
+
 	end	
 
-	for i in 0...word.length
-		new_word = []
-		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-2]}
-		new_word << word_array[i] << word_array[i-2]
-		new_word.push(remaining_letters)
-		all_anagrams << new_word.join
-	end
-
-	for i in 0...word.length
-		new_word = []
-		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-2]}
-		new_word << word_array[i] << word_array[i-2]
-		new_word.push(reverse_letters(remaining_letters))
-		all_anagrams << new_word.join
-	end
-
-	for i in 0...word.length
-		new_word = []
-		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-3]}
-		new_word << word_array[i] << word_array[i-3]
-		new_word.push(remaining_letters)
-		all_anagrams << new_word.join
-	end
-
-	for i in 0...word.length
-		new_word = []
-		remaining_letters = word_array.select{|l| l != word_array[i] && l != word_array[i-3]}
-		new_word << word_array[i] << word_array[i-3]
-		new_word.push(reverse_letters(remaining_letters))
-		all_anagrams << new_word.join
-	end	
-
-	return all_anagrams.uniq
+	#weed out any repeats, or words that are too long (makes it return correctly for 3-letter words)
+	all_anagrams.uniq.select {|anagram| anagram.length == word.length}
 end

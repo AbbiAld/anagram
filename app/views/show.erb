@@ -1,0 +1,13 @@
+<h1>Anagram Generator</h1>
+
+<form action="/" method="post" class="form">
+	<label for="word">Enter a word</label>
+	<input type="text" name="word">
+	<input type="submit" class="btn" value="Generate">
+</form>
+
+<ul>
+	<% @anagrams.each do |word| %>
+		<li><%= word %></li>
+	<% end %>
+</ul>
