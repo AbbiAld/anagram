@@ -1,4 +1,4 @@
-class Word
+class Word < ActiveRecord::Base
 	def self.find_anagrams(word)
 		word_array = word.split(//)
 		anagrams = word_array.permutation.to_a
