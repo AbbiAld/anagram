@@ -1,5 +1,12 @@
 class Word
-	def self.find_anagrams(word) #works for three and four letter words
+	def self.find_anagrams(word)
+		word_array = word.split(//)
+		anagrams = word_array.permutation.to_a
+		anagrams.map! {|word| word.join('')}
+		anagrams.uniq
+	end
+
+	def self.find_anagrams_hardway(word) #the hard way...works for three and four letter words with no repeated letters
 		word_array = word.split(//)
 		all_anagrams = []
 
