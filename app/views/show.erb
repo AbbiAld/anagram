@@ -1,6 +1,9 @@
 <%= erb :"_form" %>
 
 <h3>Anagrams for <%= @word %></h3>
+<% if @error.present? %>
+	<p class="error"><%= @error %></p>
+<% end %>
 <ul>
 	<% @anagrams.each do |word| %>
 		<li><%= word %></li>

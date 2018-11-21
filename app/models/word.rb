@@ -2,13 +2,20 @@ class Word < ActiveRecord::Base
 	def self.find_anagrams(word)
 		word_array = word.split(//)
 		anagrams = word_array.permutation.to_a
-		anagrams.map! {|word| word.join('')}
+		anagrams.map! {|word| word.join('').upcase}
 		anagrams.uniq
+		real_words = []
+		real_word_records = Word.where("text in (?)", anagrams)
+		real_word_records.each do |record|
+			real_words << record.text.downcase
+		end
+		real_words
 	end
 
 	def self.check_words(word)
 		anagrams = find_anagrams(word)
 		real_words = []
+		search_words = Word.
 		anagrams.each do |anagram|
 			if Word.find_by_text(anagram.upcase) != nil
 				real_words << anagram

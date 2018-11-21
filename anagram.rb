@@ -3,7 +3,7 @@ require_relative 'reverse_letters'
 def find_anagram(word)
 	word_array = word.split(//)
 	anagrams = word_array.permutation.to_a
-	anagrams.map! {|word| word.join('')}
+	anagrams.map! {|word| word.join('').upcase}
 	anagrams.uniq
 end
 
