@@ -6,6 +6,18 @@ class Word < ActiveRecord::Base
 		anagrams.uniq
 	end
 
+	def self.check_words(word)
+		anagrams = find_anagrams(word)
+		real_words = []
+		anagrams.each do |anagram|
+			if Word.find_by_text(anagram.upcase) != nil
+				real_words << anagram
+			end
+		end
+		real_words.sort
+	end
+
+
 	def self.find_anagrams_hardway(word) #the hard way...works for three and four letter words with no repeated letters
 		word_array = word.split(//)
 		all_anagrams = []
