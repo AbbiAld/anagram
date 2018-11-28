@@ -4,7 +4,18 @@ end
 
 post '/' do 
 	@word = params[:word]
-	redirect "/anagrams/#{@word}"
+	def empty_input?(input)
+		if input.empty?
+			raise Exception.new("Oops! Looks like your didn't enter a word. Please enter a word!")
+		end
+	end
+	begin 
+		!empty_input?(@word)
+		redirect "/anagrams/#{@word}"
+	rescue Exception => error
+		@error = error.message
+		erb :index
+	end
 end
 
 get '/anagrams/:word' do
