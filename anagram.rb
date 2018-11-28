@@ -1,11 +1,11 @@
 require_relative 'reverse_letters'
 
-def find_anagram(word)
-	word_array = word.split(//)
-	anagrams = word_array.permutation.to_a
-	anagrams.map! {|word| word.join('').upcase}
-	anagrams.uniq
-end
+#def find_anagram(word)
+#	word_array = word.split(//)
+#	anagrams = word_array.permutation.to_a
+#	anagrams.map! {|word| word.join('').upcase}
+#	anagrams.uniq
+#end
 
 def find_anagram_hard(word) #works for three and four letter words
 	word_array = word.split(//)
@@ -31,3 +31,26 @@ def find_anagram_hard(word) #works for three and four letter words
 	#weed out any repeats, or words that are too long (makes it return correctly for 3-letter words)
 	all_anagrams.uniq.select {|anagram| anagram.length == word.length}
 end
+
+
+def find_anagram(word)
+	letters = word.upcase.split(//)
+	unique_letters = letters.uniq
+	search_params = []
+	unique_letters.each do |letter|
+		count = letters.count(letter)
+		search_param = "%#{letter}%" * count
+		search_params << search_param
+	end
+	word_length = word.length
+	possible_words = Word.where("length(text) = #{word_length}")
+	search_params.each do |search_term|
+		possible_words = possible_words.where("text like ?", search_term)
+	end
+	real_words = []
+	possible_words.each do |record|
+		real_words << record.text.downcase
+	end
+	real_words
+end
+
